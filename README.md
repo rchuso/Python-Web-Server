@@ -22,17 +22,17 @@ These precursors indicate stresses in the ground that could be used to forecast 
 
 When a request comes in to the server, the server.py code is called (methods for "do_GET", "do_POST", and "do_HEAD", and a factory returns the appropriate handler for the request.
 When the handler is done with the request, the response is sent back to the client.
-If the request is for HTML or JSON content, the page is scraped for "<run>" tags, and these are passed to the python for execution. Yes, this is potentially dangerous, but if I'm writing the server, the python, and the pages, I should be reasonably safe.
+If the request is for HTML or JSON content, the page is scraped for "\<run\>" tags, and these are passed to the python for execution. Yes, this is potentially dangerous, but if I'm writing the server, the python, and the pages, I should be reasonably safe.
 And this is just a demonstration of what can be accomplished.
 There are examples of this in the subIndex.html under the subdirectory src/localhost/public/sub.
 This was as close to JSP as I could get.
 
 If the handler is returning HTML code, the folder that held the HTML page is checked to see if there's a "template.html" to use as the template.
-The template has a "<template>" tag whose "id" will reference the appropriate tag of the page being "wrapped".
-If the template has a "<template id='body'/>" tag, this will be replaced by all the content from the "<body>" of the HTML page.
-There's an example of a "<template id='fred'/> tag, and there's a section in the HTML with a "<fred>" tag whose content will be migrated to the template for sending to the client.
+The template has a "\<template\>" tag whose "id" will reference the appropriate tag of the page being "wrapped".
+If the template has a "\<template id='body'/\>" tag, this will be replaced by all the content from the "\<body\>" of the HTML page.
+There's an example of a "\<template id='fred'/\> tag, and there's a section in the HTML with a "\<fred\>" tag whose content will be migrated to the template for sending to the client.
 
-These tags "<run>", "<template>", and "<fred>" (or whatever else a user creating a page could envision) are definitely non-standard, but the content sent to the user's client will have these replaced with the appropriate standard HTML content.
+These tags "\<run\>", "\<template\>", and "\<fred\>" (or whatever else a user creating a page could envision) are definitely non-standard, but the content sent to the user's client will have these replaced with the appropriate standard HTML content.
 This should also work for XHTML content.
 
 The "test.json" file is requested (repeatedly) by button clicks that are processed by some AJAX in the main "index.html" page.
@@ -41,7 +41,7 @@ The original version of my AJAX software I called AkA.js, but for reasons which 
 I've included the version of this file as it existed in 2008, but it's only there for those who want a laugh.
 
 When the page is loaded, the "AkA.js" code scans through the HTML and adds the AJAX calls to whatever has the appropriate required parts: a "class" called "loadAkA" and an "href".
-You could put these on a paragraph ("<p>"), if you want, and the JavaScript will add an "onclick" which could be used to replace the content of the paragraph with the response from the server when you click on the text.
+You could put these on a paragraph ("\<p\>"), if you want, and the JavaScript will add an "onclick" which could be used to replace the content of the paragraph with the response from the server when you click on the text.
 If the tag (element) also has a "dest" attribute, that referenced element will be replaced with the response from the server, instead of the current tag.
 
 There's also lots of debug print still in the code, mostly so you can see the progress of the execution.
