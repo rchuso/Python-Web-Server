@@ -1,0 +1,45 @@
+/*
+ * main.css - simple, just to show minimal markup.
+ */
+ body	{
+			background-color: lightblue;
+		}
+p		{
+			font-size:14px;
+			font-weight:bold;
+		}
+h4		{
+			color: navy;
+			margin-left: 20px;
+		}
+.fred	{
+			color: orange;
+		}
+table	{
+			color: purple;
+		}
+tr:first-child	{
+			color: green;
+		}
+td:nth-child(1)	{
+			text-align: right;
+			color: white;
+		}
+td:nth-child(2)	{
+			color: red;
+		}
+.formTesting	{
+			background-color: lightgrey;
+			border: 1px solid blue;
+			float: left;
+			width: 50%;
+			max-width: 500px;
+			min-width: 300px;
+		}
+.buttonTesting	{
+			background-color: lightgreen;
+			border: 1px solid green;
+			float: left;
+			width: 100%;
+			max-width: 800px;
+		}

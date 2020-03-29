@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<template id='head' />
+		<meta charset='utf-8' />
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+		<link rel="stylesheet" type="text/css" href="/markup/main.css">
+		<script type="text/javascript" src="/common/scripts/AkA.js"></script>
+	</head>
+	<body>
+		<h4>This header is in the template.</h4>
+		<p>This template allows all the .html content in this folder to be "wrapped" with the same look and feel without duplicating things like header, footer, menu, &amp;c.
+		</p>
+		<p>The server checks to see if a "template.html" file exists in the folder and uses that.
+		If there is no such file, the file will be served as is.
+		</p>
+		<p>The template uses a "template" tag to reference (with an "id") the tag in the requested .html file, and includes the referenced content as a replacement.
+		This page includes a "template" tag in the header with an "id='head'", which will include all the elements in the "head" of the requested .html file.
+		It also includes a "template" tag with "id='body'" here, and the server will substitute everything in the "body" element from the requested file.  
+		</p>
+		<template id='body' />
+	</body>
+</html>

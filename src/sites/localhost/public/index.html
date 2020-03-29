@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Highest level index.html</title>
+	</head>
+	<body>
+		<h4 class='fred'>Here's content from the index.html file</h4>
+
+		<div class='formTesting'>
+			<p>This form tests the ability to "post" a request to another page.
+			The next page lists the supplied attributes and makes the full request available to the python scripts running on that page.
+			</p>
+			<form action='/sub/subIndex.html' method='post'>
+				<table>
+					<tr>
+						<td><label for='fname'>First name:</label></td>
+						<td><input type='text' id='fname' name='fname' value='Fred'><br></td>
+					</tr>
+					<tr>
+						<td><label for='lname'>&nbsp;Last name:</label></td>
+						<td><input type='text' id='lname' name='lname' value='Flintstone'><br><br></td>
+					</tr>
+				</table>
+				<input type='submit' value='Submit'>
+			</form>
+		</div>
+		<div class='buttonTesting'>
+			<script>
+			function myClick( href, id, responseObject ) {
+				console.log( 'in myClick href:[' +href +'] id:[' +id +'] responseObject:[' +JSON.stringify(responseObject) +']' )
+				document.getElementById( id ).innerHTML = responseObj['response']
+			}
+			function myTurn( href, id, responseObject ) {
+				console.log( 'in myTurn href:[' +href +'] id:[' +id +'] responseObject:[' +responseObject +']' )
+				document.getElementById( id ).innerHTML = responseObj['response']
+			}
+			</script>
+			<p>These buttons test the AJAX ability of the AkA.js script.
+			The buttons in this table all have a "class='loadAkA'" which is the key to the AkA class to examine and possibly modify the attributes.
+			If the attributes do not include the "href" (not usually included with button) they will be ignored.
+			This is the case with the zeroth one - it has the "class" and an "id" but no "href".
+			</p>
+			<p>The first one has no "id", so one is generated for it.
+			Because of this reference, the return .json content will be substituted as the ".innerHTML" for this button.
+			The second one has all the used attributes, so the returned .json content will be used as the new text on the button.
+			The third one is also missing an "id", but it has a "dest" attribute (not normal with button), and that will be used as the recipient of the returned .json content.
+			In this case, the "dest" references the previous button, and that one will get the returned content.
+			The fourth one has an "onclick='myTurn()'" function but no "id".
+			An "id" will be generated for it, and the response from the server will be passed to this function, together with the generated "id".
+			In this case, the supplied function replaces the button text with the returned data.
+			Of course, the returned .json file could contain other instructions for the "myTurn" script.
+			</p>
+			<p>Press the F12 button (usually) to see the details of what's happening here.
+			</p>
+			<table>
+				<tr>
+					<td><span>Click on these buttons</span></td>
+					<td><span>Description of what the buttons do</span></td>
+				</tr>
+				<tr>
+					<td><button type="button" class='loadAkA' id='wilma'>Content 0</button></td>
+					<td><span>This button references the class, but doesn't include an "href", so it will be ignored. This allows for the use of the class, but without attaching the XMLHttp functionality.</span></td>
+				</tr>
+				<tr>
+					<td><button type="button" class='loadAkA' href='test.json'>Content 1</button></td>
+					<td><span>This one has the class but no "id", so it will have an "id" generated, and it will replace its own button label with the "test.json" ['response'] value (the current time as loaded by the python in the .json file).</span></td>
+				</tr>
+				<tr>
+					<td><button type="button" class='loadAkA' href='test.json' id='fred'>Content 2</button></td>
+					<td><span>This will replace the button label with content from the supplied "href" .json file response.</span></td>
+				</tr>
+				<tr>
+					<td><button type="button" class='loadAkA' href='test.json' dest='fred'>Content 3</button></td>
+					<td><span>This button references a "dist" but no "id", so it should replace the button label on the previous line (referenced as "fred").</span></td>
+				</tr>
+				<tr>
+					<td><button type="button" class='loadAkA' href='test.json' onclick="myTurn()">Content 4</button></td>
+					<td><span>This one has the "class" and "href", but no "id"; one will be generated for it, and it will replace its own button label by invoking the "myTurn" function.</span></td>
+				</tr>
+			</table>
+			<h4></h4>
+			<div>
+				<p>The following header element will be replaced by the button.
+				The "onclick" of these buttons reference the "AkALink" function directly with their parameters.
+				This could be done by the script directly (as that's the same function that would be dynamically created), but that choice is left to the developer.
+				</p>
+				<h4 id="demo">Replace Me</h4><button type="button" onclick=AkALink('test.json','demo',null)>This will change the content of the header directly by using the 'response' of the incoming .json data.</button>
+				<h4>Replace 'wilma' (above) by Function</h4><button type="button" onclick=AkALink('test.json','wilma',myClick)>Change the content of the current button by the supplied "myClick" function.</button>
+			</div>
+		</div>
+	</body>
+</html>

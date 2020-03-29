@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>:/sub - main index.html</title>
+	</head>
+	<body>
+		<h1>This is not included in the result..</h1>
+		<p>This paragraph will be ignored and not included in the output, as I'm only selecting the "head" and the "fred" regions in the template.</p>
+		<fred>
+			<p>This paragraph is in fred</p>
+			<br/>
+			The table here has header values modified by the external process "processOne" that's started by the server. It
+			simply modifies the headers to use "title", "lower", or "upper" on the python strings.
+<pre>
+<code>
+import os
+import socket
+with socket.socket( socket.AF_INET, socket.SOCK_STREAM ) as clientSocket:
+	clientSocket.connect(( '', 7666 ))
+	print( '<tr><td>Header name</td><td></td><td>Processed header value</td></tr>' )
+	for header in self.headers:
+		data = self.headers[header]
+		clientSocket.send( data.encode( 'utf-8' ))
+		fromServer = clientSocket.recv( 4096 )
+		print( '<tr><td>{}</td><td>=</td><td>{}</td></tr>'.format( header, fromServer.decode( 'utf-8' )))
+</code>
+</pre>
+			<table>
+<run>
+import os
+import socket
+with socket.socket( socket.AF_INET, socket.SOCK_STREAM ) as clientSocket:
+	clientSocket.connect(( '', 7666 ))
+	print( '<tr><td>Header name</td><td></td><td>Processed header value</td></tr>' )
+	for header in self.headers:
+		data = self.headers[header]
+		clientSocket.send( data.encode( 'utf-8' ))
+		fromServer = clientSocket.recv( 4096 )
+		print( '<tr><td>{}</td><td>=</td><td>{}</td></tr>'.format( header, fromServer.decode( 'utf-8' )))
+</run>
+			</table>
+			<p>This sqrt(2) is calculated by the inline python:
+			<run>import math;print( math.sqrt( 2 ))</run>
+			<pre><code>import math;print( math.sqrt( 2 ))</code></pre>
+			but without using the "processOne" background process.
+			</p>
+			<p>The above table is not simply populated by the supplied headers, but those headers are first passed to a separate python process that
+			was started when the application was started.
+			The python between the "run" tags is executed and the printed result becomes part of the page (before being wrapped by the template, in this case).
+			</p>
+			<p>That process changes the case of the supplied header value using title(), lower(), or upper() and returns the result.
+			The intention is to have these processes doing other work in the background and making this available to the user's request.
+			Processes could include gathering data (like gathering the Total Electron Content of the Ionosphere or the catalog of earthquakes), training and
+			retraining a neural network using the latest collected data, or making forecasts based on the collected data and the latest available neural network.
+			</p>
+		</fred>
+		<h4>After all the headers in "fred" - not included in the output..</h4>
+		<p>You will notice that this information is not included in the output because it's not in the "fred" region, which is what the template
+		uses as its marker to include. Of course, you could use some legitimate tag, and the first item that matches will be included as output.</p>
+	</body>
+</html>

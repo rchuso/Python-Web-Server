@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8' />
+		<script type="text/javascript" src="/common/scripts/AkA.js"></script>
+		<link rel="stylesheet" type="text/css" href="/markup/main.css">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+		<template id='head' />
+	</head>
+	<body>
+		<p>This template gets all the content from the header of the requested .html file, but also (below here) requests all the content in the "fred" element.
+		When the server reads the requested .html file, it will scan that file for the first "fred" element and substitute that here in the template and return the "wrapped" content.
+		</p>
+		<p>
+		In this case, all the content of the requested .html file that's not inside the "fred" element will be ignored and not sent to the user.
+		I suppose that if I wanted to I could make a DTD with additional elements, but that would actually be more restrictive than this simple solution.
+		</p>
+		<template id='fred' />
+	</body>
+</html>

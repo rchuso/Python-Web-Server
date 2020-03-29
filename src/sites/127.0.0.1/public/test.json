@@ -1,0 +1,5 @@
+{
+	"comment": "This json file is returned from the server.",
+	"response": "<run>import datetime;print(datetime.datetime.now(),end='')</run>",
+	"unused": "My server information"
+}
