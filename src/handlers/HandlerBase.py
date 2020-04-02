@@ -17,12 +17,10 @@ class HandlerBase( object ):
 		self.handlerInfo = handlerInfo
 		# outputs:
 		self.statusCode = 200
-		print( 'host:{}\n\tpath:{}\n\tquery:{}\n\tfragment:{}\n\theaders:{}\n\thandlerInfo:{}'.format( host, path, query, fragment, headers, handlerInfo ))
 		self.contentType = handlerInfo['contentType']
 		self.content = None
 
 	def loadContent( self ):
-		print( 'HandlerBase::loadContent path:[{}]'.format( self.path ))
 		response = True
 		if self.path.startswith( '/' ): self.path = self.path[1:]
 		if self.path.startswith( 'common' ): fullPath = os.path.join( 'sites', self.path )

@@ -7,34 +7,76 @@ Created on 15/03/2020
 '''
 
 import time
-from server import Server
+import logging
+import multiprocessing
 from backgroundThreads import BackgroundThreads
-from http.server import HTTPServer
+from servers import SecureServer, SimpleServer
 
-HOSTNAME = ''
-PORT_NUMBER = 6881
+class WebServer( object ):
+	HOSTNAME = ''
+	PORT_NUMBERS = [6881, 6882]
 
-class SimpleServer( object ):
-	def __init__( self, hostname, portNumber ):
-		self.hostname = hostname
-		self.portNumber = portNumber
-		self.backgroundThreads = BackgroundThreads()
+	def __init__( self ):
+		multiprocessing.log_to_stderr( logging.DEBUG )
+		logger = multiprocessing.get_logger()
+		logger.setLevel( logging.INFO )
+		self.processList = []
 
-	def startServer( self ):
-		self.backgroundThreads.start()
-		httpd = HTTPServer(( self.hostname, self.portNumber ), Server )
-		print( '{}\t Server Started on {}:{}'.format( time.asctime(), self.hostname, self.portNumber ))
-		try:
-			httpd.serve_forever()
-		except KeyboardInterrupt:
-			pass
-		httpd.server_close()
-		self.backgroundThreads.stop()
+	def startThisServer( self, server ):
+		p = multiprocessing.Process( target=server.start, name='{}'.format( server ))
+		p.start()
+		self.processList.append( p )
+
+	def startWebServers( self ):
+		server = SimpleServer( WebServer.HOSTNAME, WebServer.PORT_NUMBERS[0])
+		self.startThisServer( server )
+		server = SecureServer( WebServer.HOSTNAME, WebServer.PORT_NUMBERS[1])
+		self.startThisServer( server )
+		
+	def getAddToProcessList( self ):
+# 		print( 'getAddToProcessList' )
+		def addToProcessList( p ):
+# 			print( 'addToProcessList: {}'.format( p.name ))
+			self.processList.append( p )
+		return addToProcessList
+
+	def stopAllProcesses( self ):
+		print( 'stopAllProcesses' )
+		for p in self.processList:
+			if p.is_alive():
+				print( 'stopping {}'.format( p.name ))
+				p.terminate() # which signal is now trapped by the code, or use p.kill()
+				p.join()
+
+	def showStatus( self ):
+		print( 'Process status:' )
+		for p in self.processList:
+			print( 'is alive:{}\tProcess name:{}'.format( p.is_alive(), p.name ))
+
+	def startBackgroundProcesses( self ):
+		backgroundThreads = BackgroundThreads( self.getAddToProcessList())
+		backgroundThreads.start()
+
+	def processStopped( self ):
+		response = False
+		for p in self.processList:
+			if not p.is_alive(): response = True
+		return response
 
 def main():
-	server = SimpleServer( HOSTNAME, PORT_NUMBER )
-	server.startServer()
-	print( '{}\t Server Stopped on {}:{}'.format( time.asctime(), HOSTNAME, PORT_NUMBER ))
+	webServer = WebServer()
+	webServer.startBackgroundProcesses()
+	webServer.startWebServers()
+	while True:
+		try:
+			time.sleep( 300 )
+			if webServer.processStopped():
+				webServer.showStatus()
+				break
+		except:
+			break
+	print( 'main stopping all processes' )
+	webServer.stopAllProcesses()
 
 if __name__ == '__main__':
 	main()

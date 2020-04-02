@@ -11,25 +11,22 @@ from handlers.HandlerBad import HandlerBad
 
 import cgi
 
-class Server( BaseHTTPRequestHandler ):
+class HttpHandler( BaseHTTPRequestHandler ):
 	itemsServed = 0
 
 	def getHostRequest( self ):
 		response = None
 		if 'Host' in self.headers:
-			print( 'Server::getHostRequest Host:{}'.format( self.headers['Host']))
 			response = self.headers['Host'].split( ':' )[0]
 			if response.startswith( 'www.' ): response = response[4:]
 		return response
 
 	def do_GET( self ):
-		print( 'do_GET' )
 		host = self.getHostRequest()
 		handler = HandlerFactory( host, self.path, self.headers )
 		self.sendResponse( handler )
 
 	def do_POST( self ):
-		print( 'do_POST' )
 		host = self.getHostRequest()
 		ctype, pdict = cgi.parse_header( self.headers['content-type'])
 		if ctype == 'multipart/form-data':
@@ -43,7 +40,6 @@ class Server( BaseHTTPRequestHandler ):
 		self.sendResponse( handler )
 
 	def do_HEAD( self ):
-		print( 'do_HEAD' )
 		host = self.getHostRequest()
 		self.sendResponse( HandlerHead( host, self.path ))
 
@@ -54,5 +50,5 @@ class Server( BaseHTTPRequestHandler ):
 		self.send_header( 'Content-type', handler.getContentType())
 		self.end_headers()
 		handler.writeContent( self.wfile.write )
-		Server.itemsServed += 1 # not thread-safe, but I don't care
-		print( 'item count:{}'.format( Server.itemsServed ))
+		HttpHandler.itemsServed += 1 # not thread-safe, but I don't care
+		print( 'items served:{}'.format( HttpHandler.itemsServed ))

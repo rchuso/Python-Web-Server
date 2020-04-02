@@ -12,7 +12,6 @@ from handlers.HandlerBase import HandlerBase
 from html.parser import HTMLParser
 
 
-
 class ParseGetTagContents( HTMLParser ):
 	def __init__( self, findTag, callback ):
 		super( ParseGetTagContents, self ).__init__( convert_charrefs=False )
@@ -47,7 +46,6 @@ class ParseGetTagContents( HTMLParser ):
 	def handle_data( self, data ):
 		if self.savingData:
 			self.callback( data )
-
 
 
 class ParseInsertIntoTemplate( HTMLParser ):
@@ -90,7 +88,6 @@ class ParseInsertIntoTemplate( HTMLParser ):
 		self.content += '<!{}>'.format( decl )
 
 
-
 class ParseRunCode( HTMLParser ):
 	def __init__( self, callback ):
 		super( ParseRunCode, self ).__init__( convert_charrefs=False )
@@ -131,7 +128,6 @@ class ParseRunCode( HTMLParser ):
 
 	def handle_decl( self, decl ):
 		self.content += '<!{}>'.format( decl )
-
 
 
 class HandlerText( HandlerBase ):

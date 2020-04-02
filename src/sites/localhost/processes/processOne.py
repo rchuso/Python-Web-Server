@@ -6,9 +6,30 @@ Created on 15/03/2020
 @author: rand huso
 '''
 
+
+
+import sys
+import signal
 import socket
 
-class Process( object ):
+
+
+class BaseProcess( object ): # pull this out
+	def __init__( self ):
+		def sigHandler( _signo, _stack_frame ):
+			self.stop() # in case it's needed
+			sys.exit( 0 )
+		signal.signal( signal.SIGTERM, sigHandler )
+
+	def start( self ):
+		pass # attach sockets or whatever is needed
+
+	def stop( self ):
+		pass # do any final cleanup before exiting
+
+# TODO: make this use a base class that provides the start and stop method - for process control
+
+class Process( BaseProcess ): # class must be called "Process"
 	HOST = '' # should probably be 'localhost' to keep other on the network from connecting to it
 	PORT_NUMBER = 7666
 
@@ -41,8 +62,8 @@ class Process( object ):
 					print( 'disconnection from:{}'.format( clientAddr ))
 			print( 'end of incoming data, closing socket.' )
 
-def main():
-	Process().start()
-
-if __name__ == '__main__':
-	main()
+# def main():
+# 	Process().start()
+# 
+# if __name__ == '__main__':
+# 	main()

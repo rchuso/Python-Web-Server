@@ -7,10 +7,10 @@
 		<h1>This is not included in the result..</h1>
 		<p>This paragraph will be ignored and not included in the output, as I'm only selecting the "head" and the "fred" regions in the template.</p>
 		<fred>
-			<p>This paragraph is in fred</p>
-			<br/>
-			The table here has header values modified by the external process "processOne" that's started by the server. It
+			<h5>This paragraph is in fred</h5>
+			<p>The table here has header values modified by the external process "processOne" that's started by the server. It
 			simply modifies the headers to use "title", "lower", or "upper" on the python strings.
+			</p>
 <pre>
 <code>
 import os
@@ -18,6 +18,11 @@ import socket
 with socket.socket( socket.AF_INET, socket.SOCK_STREAM ) as clientSocket:
 	clientSocket.connect(( '', 7666 ))
 	print( '<tr><td>Header name</td><td></td><td>Processed header value</td></tr>' )
+	for query in self.query:
+		data = self.query[query]
+		clientSocket.send( data.encode( 'utf-8' ))
+		fromServer = clientSocket.recv( 4096 )
+		print( '<tr><td>{}</td><td>=</td><td>{}</td></tr>'.format( query, fromServer.decode( 'utf-8' )))
 	for header in self.headers:
 		data = self.headers[header]
 		clientSocket.send( data.encode( 'utf-8' ))
@@ -32,6 +37,11 @@ import socket
 with socket.socket( socket.AF_INET, socket.SOCK_STREAM ) as clientSocket:
 	clientSocket.connect(( '', 7666 ))
 	print( '<tr><td>Header name</td><td></td><td>Processed header value</td></tr>' )
+	for query in self.query:
+		data = self.query[query]
+		clientSocket.send( data.encode( 'utf-8' ))
+		fromServer = clientSocket.recv( 4096 )
+		print( '<tr><td>{}</td><td>=</td><td>{}</td></tr>'.format( query, fromServer.decode( 'utf-8' )))
 	for header in self.headers:
 		data = self.headers[header]
 		clientSocket.send( data.encode( 'utf-8' ))
